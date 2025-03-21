@@ -1,0 +1,42 @@
+---
+import MainLayout from '@/components/layout/main-layout.astro';
+import AppLayout from '@/components/layout/app-layout';
+---
+
+<MainLayout title="Dashboard">
+  <AppLayout client:load>
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div class="rounded-lg border bg-card p-6 shadow-sm">
+        <h3 class="text-lg font-medium">Users</h3>
+        <p class="text-3xl font-bold">1,234</p>
+      </div>
+      <div class="rounded-lg border bg-card p-6 shadow-sm">
+        <h3 class="text-lg font-medium">Revenue</h3>
+        <p class="text-3xl font-bold">$12,345</p>
+      </div>
+      <div class="rounded-lg border bg-card p-6 shadow-sm">
+        <h3 class="text-lg font-medium">Active Sessions</h3>
+        <p class="text-3xl font-bold">432</p>
+      </div>
+    </div>
+    
+    <div class="mt-8 rounded-lg border bg-card p-6 shadow-sm">
+      <h2 class="text-xl font-semibold mb-4">Recent Activity</h2>
+      <div class="space-y-4">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div class="flex items-center gap-4 border-b pb-4">
+            <div class="h-10 w-10 rounded-full bg-muted"></div>
+            <div>
+              <p class="font-medium">User {i + 1}</p>
+              <p class="text-sm text-muted-foreground">Completed action #{i + 1}</p>
+            </div>
+            <div class="ml-auto text-sm text-muted-foreground">
+              {i + 1}h ago
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </AppLayout>
+</MainLayout>
+
