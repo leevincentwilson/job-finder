@@ -1,0 +1,16 @@
+---
+// src/components/dashboard/ChartBar.astro
+interface Props {
+  value: number;
+  height: number; // percentage 0-100
+  variant?: 'default' | 'purple';
+  tooltip: string;
+}
+
+const { value, height, variant = 'default', tooltip } = Astro.props;
+
+const variantClass = variant === 'purple' ? 'purple' : '';
+---
+
+<div class={`chart-bar ${variantClass}`} style={`height: ${height}%`}></div>
+<div class="chart-tooltip">{tooltip}</div>

@@ -1,0 +1,60 @@
+---
+// src/components/dashboard/UsageChart.astro
+import ChartBar from './ChartBar.astro';
+
+interface DataPoint {
+  day: string;
+  electricity: {
+    value: number;
+    percentage: number;
+  };
+  gas: {
+    value: number;
+    percentage: number;
+  };
+}
+
+interface Props {
+  title: string;
+  data: DataPoint[];
+}
+
+const { title, data } = Astro.props;
+---
+
+<div class="usage-chart">
+  <div class="chart-header">
+    <div class="chart-title">{title}</div>
+    <div class="chart-legend">
+      <div class="legend-item">
+        <div class="legend-color pink"></div>
+        <span>Electricity</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color purple"></div>
+        <span>Gas</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    {data.map(point => (
+      <div class="chart-group">
+        <ChartBar
+          value={point.electricity.value}
+          height={point.electricity.percentage}
+          tooltip={`Electricity: ${point.electricity.value} kWh`}
+        />
+        <ChartBar
+          value={point.gas.value}
+          height={point.gas.percentage}
+          variant="purple"
+          tooltip={`Gas: ${point.gas.value} kWh`}
+        />
+        <div class="chart-label">{point.day}</div>
+      </div>
+    ))}
+  </div>
+
+  <div class="chart-axis"></div>
+</div>

@@ -1,0 +1,58 @@
+---
+// src/components/layout/Sidebar.astro
+import SidebarHeader from "./SidebarHeader.astro";
+import SidebarMenuItem from "./SidebarMenuItem.astro";
+
+interface Props {
+  collapsed?: boolean;
+}
+
+const { collapsed = false } = Astro.props;
+
+// Define menu items for sidebar
+const menuItems = [
+  {
+    icon: "home",
+    title: "Dashboard",
+    description: "Energy usage overview",
+    href: "/",
+    isActive:
+      Astro.url.pathname === "/" || Astro.url.pathname === "/index.html",
+  },
+  {
+    icon: "usage",
+    title: "Usage",
+    description: "Monitor consumption",
+    href: "/usage",
+    isActive:
+      Astro.url.pathname === "/usage" || Astro.url.pathname === "/usage.html",
+  },
+  {
+    icon: "billing",
+    title: "Billing",
+    description: "Payments & statements",
+    href: "/billing",
+    isActive:
+      Astro.url.pathname === "/billing" ||
+      Astro.url.pathname === "/billing.html",
+  },
+];
+---
+
+<aside class={`sidebar ${collapsed ? "collapsed" : ""}`} id="sidebar">
+  <SidebarHeader />
+
+  <div class="menu-wrapper">
+    {
+      menuItems.map((item) => (
+        <SidebarMenuItem
+          icon={item.icon}
+          title={item.title}
+          description={item.description}
+          href={item.href}
+          isActive={item.isActive}
+        />
+      ))
+    }
+  </div>
+</aside>

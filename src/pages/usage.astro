@@ -1,0 +1,73 @@
+---
+// src/pages/usage.astro
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import StatCard from '../components/dashboard/StatCard.astro';
+import UsageChart from '../components/dashboard/UsageChart.astro';
+
+// Sample data for monthly view
+const monthlyData = [
+  {
+    day: 'Week 1',
+    electricity: { value: 28.4, percentage: 70 },
+    gas: { value: 15.2, percentage: 45 }
+  },
+  {
+    day: 'Week 2',
+    electricity: { value: 32.1, percentage: 80 },
+    gas: { value: 18.5, percentage: 55 }
+  },
+  {
+    day: 'Week 3',
+    electricity: { value: 25.7, percentage: 65 },
+    gas: { value: 14.8, percentage: 40 }
+  },
+  {
+    day: 'Week 4',
+    electricity: { value: 30.2, percentage: 75 },
+    gas: { value: 20.1, percentage: 60 }
+  }
+];
+---
+
+<DashboardLayout title="Usage">
+  <PageHeader
+    title="Usage Monitoring"
+    subtitle="Track and analyze your energy consumption patterns over time."
+    icon="usage"
+  />
+
+  <div class="dashboard-stats">
+    <StatCard
+      label="Monthly Usage"
+      value="116.4 kWh"
+      icon="barChart"
+      trend={{
+        value: "8% less than last month",
+        direction: "up"
+      }}
+    />
+
+    <StatCard
+      label="Average Daily"
+      value="3.8 kWh"
+      icon="clock"
+      trend={{
+        value: "0.4 kWh less than target",
+        direction: "up"
+      }}
+    />
+
+    <StatCard
+      label="Monthly Cost"
+      value="£32.60"
+      icon="dollar"
+      trend={{
+        value: "£3.50 saved vs. last month",
+        direction: "up"
+      }}
+    />
+  </div>
+
+  <UsageChart title="Monthly Breakdown" data={monthlyData} />
+</DashboardLayout>

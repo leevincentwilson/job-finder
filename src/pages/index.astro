@@ -1,42 +1,87 @@
 ---
-import MainLayout from '@/components/layout/main-layout.astro';
-import AppLayout from '@/components/layout/app-layout';
+// src/pages/index.astro
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import PageHeader from '../components/dashboard/PageHeader.astro';
+import StatCard from '../components/dashboard/StatCard.astro';
+import UsageChart from '../components/dashboard/UsageChart.astro';
+
+const chartData = [
+  {
+    day: 'Mon',
+    electricity: { value: 3.1, percentage: 60 },
+    gas: { value: 2.2, percentage: 40 }
+  },
+  {
+    day: 'Tue',
+    electricity: { value: 4.3, percentage: 85 },
+    gas: { value: 2.6, percentage: 50 }
+  },
+  {
+    day: 'Wed',
+    electricity: { value: 2.3, percentage: 45 },
+    gas: { value: 1.8, percentage: 35 }
+  },
+  {
+    day: 'Thu',
+    electricity: { value: 3.9, percentage: 75 },
+    gas: { value: 3.3, percentage: 65 }
+  },
+  {
+    day: 'Fri',
+    electricity: { value: 2.6, percentage: 50 },
+    gas: { value: 1.5, percentage: 30 }
+  },
+  {
+    day: 'Sat',
+    electricity: { value: 3.4, percentage: 65 },
+    gas: { value: 2.8, percentage: 55 }
+  },
+  {
+    day: 'Sun',
+    electricity: { value: 4.7, percentage: 90 },
+    gas: { value: 3.1, percentage: 60 }
+  }
+];
 ---
 
-<MainLayout title="Dashboard">
-  <AppLayout client:load>
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <div class="rounded-lg border bg-card p-6 shadow-sm">
-        <h3 class="text-lg font-medium">Users</h3>
-        <p class="text-3xl font-bold">1,234</p>
-      </div>
-      <div class="rounded-lg border bg-card p-6 shadow-sm">
-        <h3 class="text-lg font-medium">Revenue</h3>
-        <p class="text-3xl font-bold">$12,345</p>
-      </div>
-      <div class="rounded-lg border bg-card p-6 shadow-sm">
-        <h3 class="text-lg font-medium">Active Sessions</h3>
-        <p class="text-3xl font-bold">432</p>
-      </div>
-    </div>
-    
-    <div class="mt-8 rounded-lg border bg-card p-6 shadow-sm">
-      <h2 class="text-xl font-semibold mb-4">Recent Activity</h2>
-      <div class="space-y-4">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div class="flex items-center gap-4 border-b pb-4">
-            <div class="h-10 w-10 rounded-full bg-muted"></div>
-            <div>
-              <p class="font-medium">User {i + 1}</p>
-              <p class="text-sm text-muted-foreground">Completed action #{i + 1}</p>
-            </div>
-            <div class="ml-auto text-sm text-muted-foreground">
-              {i + 1}h ago
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </AppLayout>
-</MainLayout>
+<DashboardLayout title="Dashboard">
+  <PageHeader
+    title="Energy Usage Dashboard"
+    subtitle="Monitor and optimize your energy consumption with real-time insights."
+    icon="home"
+  />
 
+  <div class="dashboard-stats">
+    <StatCard
+      label="Today's Usage"
+      value="4.2 kWh"
+      icon="barChart"
+      trend={{
+        value: "15% below average",
+        direction: "up"
+      }}
+    />
+
+    <StatCard
+      label="Peak Hours"
+      value="0.9 kWh"
+      icon="clock"
+      trend={{
+        value: "8% above target",
+        direction: "down"
+      }}
+    />
+
+    <StatCard
+      label="Estimated Cost"
+      value="£1.18"
+      icon="dollar"
+      trend={{
+        value: "£0.22 saved today",
+        direction: "up"
+      }}
+    />
+  </div>
+
+  <UsageChart title="Weekly Consumption" data={chartData} />
+</DashboardLayout>

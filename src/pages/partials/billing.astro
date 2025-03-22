@@ -1,0 +1,60 @@
+---
+// src/pages/billing.astro
+
+export const partial = true;
+import PageHeader from "../../components/dashboard/PageHeader.astro";
+import StatCard from "../../components/dashboard/StatCard.astro";
+// This is a simplified billing page with just stats cards
+---
+
+<PageHeader
+  title="Billing & Payments"
+  subtitle="Manage your payments, view statements, and track your billing history."
+  icon="billing"
+/>
+
+<div class="dashboard-stats">
+  <StatCard
+    label="Current Balance"
+    value="£42.15"
+    icon="dollar"
+    trend={{
+      value: "Due in 14 days",
+      direction: "up",
+    }}
+  />
+
+  <StatCard
+    label="Last Payment"
+    value="£38.72"
+    icon="clock"
+    trend={{
+      value: "Processed on May 1",
+      direction: "up",
+    }}
+  />
+
+  <StatCard
+    label="Annual Savings"
+    value="£124.50"
+    icon="barChart"
+    trend={{
+      value: "18% less than last year",
+      direction: "up",
+    }}
+  />
+</div>
+
+<!-- Future enhancement: Add payment history table or invoice list component -->
+<div class="mt-8">
+  <h3 class="text-xl mb-4">Payment Methods</h3>
+  <div class="bg-surface p-6 rounded-2xl border border-border-light">
+    <p class="text-light mb-4">
+      Your primary payment method is set to Direct Debit from account ending in
+      **3842.
+    </p>
+    <p class="text-light">
+      Next payment of £42.15 will be processed automatically on June 1, 2025.
+    </p>
+  </div>
+</div>

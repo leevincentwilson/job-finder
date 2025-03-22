@@ -1,0 +1,152 @@
+---
+// src/components/ThemeToggle.astro
+import Icon from "./Icon.astro";
+---
+
+<button
+  id="theme-toggle"
+  class="theme-toggle"
+  aria-label="Toggle dark mode"
+  data-title="Toggle theme"
+>
+  <span class="menu-icon" id="theme-icon-container">
+    <Icon name="moon" size={18} />
+  </span>
+  <span class="menu-text" id="theme-text">Dark Mode</span>
+</button>
+
+<script>
+  // Theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  const iconContainer = document.getElementById("theme-icon-container");
+  const themeText = document.getElementById("theme-text");
+
+  // Animated icon change helper
+  function updateThemeIcon(isDarkMode) {
+    iconContainer.style.transform = "scale(0)";
+
+    setTimeout(() => {
+      iconContainer.innerHTML = isDarkMode
+        ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>`
+        : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>`;
+
+      themeText.textContent = isDarkMode ? "Light Mode" : "Dark Mode";
+      iconContainer.style.transform = "scale(1)";
+    }, 150);
+  }
+
+  // Check for saved theme preference or respect OS theme
+  function initializeTheme() {
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const savedTheme = localStorage.getItem("darkMode") === "true";
+    const isDarkMode = savedTheme ?? prefersDark;
+
+    if (isDarkMode) {
+      document.body.classList.add("dark-mode");
+      updateThemeIcon(true);
+    }
+  }
+
+  // Toggle dark/light mode
+  function toggleDarkMode() {
+    const isDarkMode = document.body.classList.toggle("dark-mode");
+    updateThemeIcon(isDarkMode);
+
+    // Save preference
+    try {
+      localStorage.setItem("darkMode", isDarkMode.toString());
+    } catch (e) {
+      console.warn("Could not save theme preference");
+    }
+  }
+
+  // Initialize theme on load
+  document.addEventListener("DOMContentLoaded", initializeTheme);
+
+  // Add click event listener
+  themeToggle.addEventListener("click", toggleDarkMode);
+</script>
+
+<style>
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    background-color: transparent;
+    color: var(--text);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+  }
+
+  .theme-toggle:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+  }
+
+  .theme-toggle:focus {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+  }
+
+  .theme-toggle .menu-icon {
+    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    position: relative;
+    left: 0;
+  }
+
+  :global(.sidebar.collapsed) .theme-toggle .menu-icon {
+    left: 50%;
+    transform: translateX(-50%);
+    margin-right: 0;
+  }
+
+  .theme-toggle:hover .menu-icon {
+    transform: rotate(360deg);
+  }
+
+  .theme-toggle .menu-text {
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity var(--transition);
+  }
+
+  :global(.sidebar.collapsed) .theme-toggle .menu-text {
+    opacity: 0;
+  }
+
+  :global(.sidebar.collapsed) .theme-toggle:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 55px;
+    background-color: #333;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+</style>

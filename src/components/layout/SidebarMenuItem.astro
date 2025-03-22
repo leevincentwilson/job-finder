@@ -1,0 +1,34 @@
+---
+// src/components/layout/SidebarMenuItem.astro
+import Icon from "../ui/Icon.astro";
+
+interface Props {
+  icon: string;
+  title: string;
+  description: string;
+  href: string;
+  isActive?: boolean;
+}
+
+const { icon, title, description, href, isActive = false } = Astro.props;
+---
+
+<a
+  href={href}
+  class={`menu-item ${isActive ? "active" : ""}`}
+  hx-get="/pages/settings.astro"
+  hx-target="#main-content"
+  hx-trigger="click"
+  hx-ext="loading-states"
+  data-loading-delay="100"
+  data-loading-path="#main-content"
+  data-loading-class="is-loading"
+>
+  <div class="menu-item-icon">
+    <Icon name={icon} size={18} />
+  </div>
+  <div class="menu-item-content">
+    <div class="menu-item-title">{title}</div>
+    <div class="menu-item-description">{description}</div>
+  </div>
+</a>

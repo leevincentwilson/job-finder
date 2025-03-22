@@ -1,0 +1,100 @@
+// src/components/ui/AnimatedChevron.astro
+---
+interface Props {
+  direction?: 'right' | 'left';
+  size?: number;
+  class?: string;
+  strokeWidth?: number;
+  id?: string;
+}
+
+const {
+  direction = 'right',
+  size = 24,
+  class: className = "",
+  strokeWidth = 2,
+  id,
+} = Astro.props;
+
+const isRight = direction === 'right';
+---
+
+<div class={`animated-chevron-wrapper ${className}`} data-direction={direction} id={id}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width={strokeWidth}
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="animated-chevron"
+    aria-hidden="true"
+  >
+    <path d={isRight ? "M9 18l6-6-6-6" : "M15 18l-6-6 6-6"}></path>
+  </svg>
+</div>
+
+<style>
+  .animated-chevron-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .animated-chevron {
+    transition: transform 0.3s ease, stroke 0.3s ease;
+  }
+
+  /* Hover animations */
+  .animated-chevron-wrapper[data-direction="right"]:hover {
+    transform: translateX(3px);
+  }
+
+  .animated-chevron-wrapper[data-direction="left"]:hover {
+    transform: translateX(-3px);
+  }
+
+  /* For JavaScript toggling classes */
+  .animated-chevron-wrapper.toggled[data-direction="right"] {
+    transform: translateX(-3px);
+  }
+
+  .animated-chevron-wrapper.toggled[data-direction="left"] {
+    transform: translateX(3px);
+  }
+
+  .animated-chevron-wrapper.toggled .animated-chevron {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  // Client-side script to toggle chevron direction
+  document.addEventListener("DOMContentLoaded", () => {
+    // Find all chevron elements
+    const chevrons = document.querySelectorAll('.animated-chevron-wrapper');
+
+    chevrons.forEach(chevron => {
+      chevron.addEventListener('click', () => {
+        // Toggle the class for animation
+        chevron.classList.toggle('toggled');
+
+        // Update the direction attribute
+        const currentDirection = chevron.getAttribute('data-direction');
+        const newDirection = currentDirection === 'right' ? 'left' : 'right';
+        chevron.setAttribute('data-direction', newDirection);
+
+        // Dispatch an event for parent components
+        chevron.dispatchEvent(new CustomEvent('direction-change', {
+          detail: { direction: newDirection },
+          bubbles: true
+        }));
+      });
+    });
+  });
+</script>

@@ -1,44 +1,96 @@
 ---
-// Import the layout
-import Layout from '../layouts/Layout.astro';
-
-// Sample data for the table
-const tableData = [
-  { id: 1, name: "Product A", category: "Electronics", price: "$299.99", stock: 42 },
-  { id: 2, name: "Product B", category: "Home & Kitchen", price: "$59.99", stock: 13 },
-  { id: 3, name: "Product C", category: "Books", price: "$15.99", stock: 67 },
-  { id: 4, name: "Product D", category: "Electronics", price: "$499.99", stock: 8 },
-  { id: 5, name: "Product E", category: "Clothing", price: "$29.99", stock: 31 },
-];
+// Astro HTMX with loading-delay
 ---
 
-<Layout title="Simple Table">
-  <main class="container mx-auto py-10">
-    <h1 class="text-2xl font-bold mb-6">Products</h1>
+<!-- src/pages/index.astro --><!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTMX with loading-delay</title>
+    <script is:inline src="https://unpkg.com/htmx.org@1.9.6"></script>
 
-    <div class="rounded-md border">
-      <table class="w-full">
-        <thead>
-          <tr class="border-b bg-muted/50">
-            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">ID</th>
-            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Category</th>
-            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Price</th>
-            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Stock</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableData.map((item) => (
-            <tr class="border-b transition-colors hover:bg-muted/50">
-              <td class="p-4 align-middle">{item.id}</td>
-              <td class="p-4 align-middle font-medium">{item.name}</td>
-              <td class="p-4 align-middle">{item.category}</td>
-              <td class="p-4 align-middle">{item.price}</td>
-              <td class="p-4 align-middle">{item.stock}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <script
+      is:inline
+      src="https://unpkg.com/htmx.org@1.9.6/dist/ext/loading-states.js"
+    ></script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      button {
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+      }
+
+      .spinner {
+        display: none;
+        margin-left: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s linear infinite;
+      }
+
+      .htmx-request.spinner {
+        display: inline-block;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body hx-ext="loading-states">
+    <h1>HTMX Spinner with loading-delay</h1>
+    <input
+      type="text"
+      name="q"
+      hx-get="/trigger_delay"
+      hx-trigger="keyup changed delay:500ms"
+      hx-target="#search-results"
+      placeholder="Search..."
+      data-loading-delay="1000"
+    />
+    <div id="search-results"></div>
+    <button
+      hx-swap="innerHTML"
+      hx-target="#result"
+      data-loading-delay="1000"
+      data-loading-disabled
+    >
+      Click Me
+      <span class="spinner" data-loading></span>
+    </button>
+    <button hx-get="https://httpbin.org/delay/0" data-loading-delay="3000">
+      Click Me!
+      <img class="htmx-indicator" src="/spinner.gif" />
+    </button>
+    <div id="result" style="margin-top: 1rem;"></div>
+    <div data-loading-states>
+      <div hx-get=""></div>
+      <div data-loading>loading</div>
     </div>
-  </main>
-</Layout>
+
+    <div data-loading-states>
+      <div hx-get=""></div>
+      <div data-loading>loading</div>
+    </div>
+
+    <form data-loading-states hx-post="">
+      <div data-loading>loading</div>
+    </form>
+  </body>
+</html>

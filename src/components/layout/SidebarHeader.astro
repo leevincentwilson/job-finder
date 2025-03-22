@@ -1,0 +1,25 @@
+---
+// src/components/layout/SidebarHeader.astro
+import Icon from "../ui/Icon.astro";
+---
+
+<div class="sidebar-header">
+  <div class="sidebar-title">Octopus Energy</div>
+  <button class="toggle-btn" id="toggle-sidebar" aria-label="Toggle sidebar">
+    <Icon name="chevronLeft" size={18} id="toggle-icon" />
+  </button>
+</div>
+
+<script>
+  // Client-side script for sidebar toggling
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("toggle-sidebar");
+    const sidebar = document.getElementById("sidebar");
+
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+      });
+    }
+  });
+</script>

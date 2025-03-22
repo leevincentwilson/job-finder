@@ -1,0 +1,35 @@
+---
+// src/components/dashboard/StatCard.astro
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  label: string;
+  value: string;
+  icon: string;
+  trend?: {
+    value: string;
+    direction: 'up' | 'down';
+  };
+}
+
+const { label, value, icon, trend } = Astro.props;
+
+const trendIcon = trend?.direction === 'up' ? 'trendUp' : 'trendDown';
+const trendClass = trend?.direction === 'down' ? 'down' : '';
+---
+
+<div class="stat-card">
+  <div class="stat-icon">
+    <Icon name={icon} size={18} />
+  </div>
+
+  <div class="stat-label label">{label}</div>
+  <div class="stat-value value">{value}</div>
+
+  {trend && (
+    <div class={`stat-trend ${trendClass}`}>
+      <Icon name={trendIcon} size={16} />
+      {trend.value}
+    </div>
+  )}
+</div>

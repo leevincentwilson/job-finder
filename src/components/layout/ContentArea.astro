@@ -1,0 +1,22 @@
+---
+// src/components/layout/ContentArea.astro
+---
+
+<main class="content">
+  <div id="main-content" class="content-inner">
+    <slot />
+  </div>
+  <div data-loading>loading</div>
+  <div
+    class="transition-all ease-in-out duration-600"
+    data-loading-class="bg-gray-100 opacity-80"
+  >
+    ...
+  </div>
+  <div
+    class="p-8 bg-gray-100 transition-all ease-in-out duration-600"
+    data-loading-class-remove="bg-gray-100"
+  >
+    ...
+  </div>
+</main>

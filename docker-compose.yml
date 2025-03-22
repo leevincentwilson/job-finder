@@ -1,0 +1,13 @@
+
+services:
+  job-finder-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+    environment:
+      - NODE_ENV=production

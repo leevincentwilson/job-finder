@@ -1,0 +1,97 @@
+---
+// src/components/MenuItem.astro
+import Icon from "./Icon.astro";
+
+interface Props {
+  href: string;
+  icon: string;
+  label: string;
+  isActive?: boolean;
+}
+
+const { href, icon, label, isActive = false } = Astro.props;
+---
+
+<li class="menu-item">
+  <a
+    href={href}
+    class:list={["menu-link", { active: isActive }]}
+    data-title={label}
+  >
+    <span class="menu-icon">
+      <Icon name={icon} size={18} />
+    </span>
+    <span class="menu-text">{label}</span>
+  </a>
+</li>
+
+<style>
+  .menu-item {
+    margin-bottom: 5px;
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all var(--transition);
+    position: relative;
+  }
+
+  .menu-link:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+  }
+
+  .menu-link.active {
+    background-color: var(--primary);
+    color: var(--text-lighter);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .menu-icon {
+    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    transition: transform 0.3s;
+  }
+
+  .menu-link:hover .menu-icon {
+    transform: scale(1.2);
+  }
+
+  .menu-text {
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity var(--transition);
+  }
+
+  :global(.sidebar.collapsed) .menu-text {
+    opacity: 0;
+  }
+
+  :global(.sidebar.collapsed) .menu-link:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 55px;
+    background-color: #333;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .menu-link:focus {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+  }
+</style>

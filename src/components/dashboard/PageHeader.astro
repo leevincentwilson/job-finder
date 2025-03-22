@@ -1,0 +1,22 @@
+---
+// src/components/dashboard/PageHeader.astro
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  icon: string;
+}
+
+const { title, subtitle, icon } = Astro.props;
+---
+
+<div class="page-header">
+  <div class="page-icon">
+    <Icon name={icon} size={24} />
+  </div>
+  <div>
+    <h2>{title}</h2>
+    {subtitle && <div class="subtitle">{subtitle}</div>}
+  </div>
+</div>
